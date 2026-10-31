@@ -7,6 +7,7 @@ A small FancyMenu addon that adds seeking to FancyMenu's Audio element.
 - **Audio Seek Bar** (element): shows the progress of the current track. Click or drag to jump to another position.
 - **Seek Audio Track** (action): jumps to a position. Value: `<audio element id>:<seconds>`
 - **Start Track At, Once Per Game Start** (action): the first play of a track after game start begins at a set second, later plays start from the beginning. Value: `<audio element id>:<track file>:<seconds>`
+- **Audio Playtime / Duration (Seconds)** (placeholders): exact time of the current track, e.g. `83.417`. Put it into a variable with a Ticker to sync a GLSL shader to the music (`fmVarFloat_<variable>` uniform).
 
 ## Usage
 

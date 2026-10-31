@@ -8,5 +8,9 @@
   "menu_audio_controls.actions.seek.value": "<audio element identifier>:<seconds>",
   "menu_audio_controls.actions.intro_start": "Start Track At (Once Per Game Start)",
   "menu_audio_controls.actions.intro_start.desc": "The first time the given track of an Audio element plays after the game started, it begins at the given second. Every later play starts from the beginning. Running this action again in the same session does nothing, so it can go into a screen's opening actions.",
-  "menu_audio_controls.actions.intro_start.value": "<audio element identifier>:<track file, e.g. sweden.ogg>:<seconds>"
+  "menu_audio_controls.actions.intro_start.value": "<audio element identifier>:<track file, e.g. sweden.ogg>:<seconds>",
+  "menu_audio_controls.placeholders.playtime_seconds": "Audio Playtime (Seconds)",
+  "menu_audio_controls.placeholders.playtime_seconds.desc": "How far the current track of an Audio element has played, in seconds with millisecond precision (e.g. 83.417). 0 while no track is loaded. To drive a GLSL shader, copy it into a variable with a Ticker and read the variable as an fmVarFloat_ uniform.",
+  "menu_audio_controls.placeholders.duration_seconds": "Audio Duration (Seconds)",
+  "menu_audio_controls.placeholders.duration_seconds.desc": "Length of the current track of an Audio element, in seconds with millisecond precision. 0 while no track is loaded."
 }

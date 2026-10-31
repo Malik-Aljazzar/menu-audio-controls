@@ -23,6 +23,7 @@ public class MenuAudioControls {
         IntroStartTracker introStarts = new IntroStartTracker();
         FancyMenuIntegration.register(players, introStarts);
         NeoForge.EVENT_BUS.register(new IntroStartHandler(players, introStarts));
-        LOGGER.info("Menu Audio Controls loaded (FancyMenu: audio seek bar, seek + intro start actions)");
+        LOGGER.info("Menu Audio Controls loaded (FancyMenu: audio seek bar, seek + intro start actions, "
+                + "playtime/duration seconds placeholders)");
     }
 }

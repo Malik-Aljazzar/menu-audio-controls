@@ -2,6 +2,7 @@ package dev.malik.menuaudiocontrols.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 
 class SeekMathTest {
@@ -31,6 +32,26 @@ class SeekMathTest {
         assertEquals(0f, SeekMath.clampSeconds(-3f, 200f));
         assertEquals(0f, SeekMath.secondsAt(-0.5f, 200f));
         assertEquals(0f, SeekMath.clamp01(Float.POSITIVE_INFINITY));
+    }
+
+    @Test
+    void decimalSecondsAreLocaleIndependentMilliseconds() {
+        Locale before = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.GERMANY);                // would print "83,417"
+            assertEquals("83.417", SeekMath.decimalSeconds(83.4171f));
+            assertEquals("0.050", SeekMath.decimalSeconds(0.05f));
+        } finally {
+            Locale.setDefault(before);
+        }
+    }
+
+    @Test
+    void decimalSecondsOfInvalidTimesAreZero() {
+        assertEquals("0", SeekMath.decimalSeconds(0f));
+        assertEquals("0", SeekMath.decimalSeconds(-2f));
+        assertEquals("0", SeekMath.decimalSeconds(Float.NaN));
+        assertEquals("0", SeekMath.decimalSeconds(Float.POSITIVE_INFINITY));
     }
 
     @Test

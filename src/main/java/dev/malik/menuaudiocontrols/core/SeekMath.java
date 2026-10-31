@@ -1,5 +1,7 @@
 package dev.malik.menuaudiocontrols.core;
 
+import java.util.Locale;
+
 /** Positions on a track: bar fraction <-> seconds, clamped so a seek never ends the track. */
 public final class SeekMath {
 
@@ -30,6 +32,14 @@ public final class SeekMath {
             return 0f;
         }
         return Math.min(value, 1f);
+    }
+
+    /** Plain decimal seconds with millisecond precision, e.g. 83.417; "0" for invalid or negative times. */
+    public static String decimalSeconds(float seconds) {
+        if (!Float.isFinite(seconds) || seconds <= 0f) {
+            return "0";
+        }
+        return String.format(Locale.ROOT, "%.3f", seconds);
     }
 
     /** "m:ss", e.g. 3:07. */

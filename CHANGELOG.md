@@ -2,6 +2,12 @@
 
 All notable changes to Menu Audio Controls are documented in this file.
 
+## [1.1.0]
+
+### New
+- "Audio Playtime (Seconds)" placeholder (`menu_audio_playtime_seconds`): how far the current track of an Audio element has played, in seconds with millisecond precision (e.g. `83.417`). FancyMenu's own playtime placeholder only shows whole seconds. Copy it into a variable with a Ticker to drive a GLSL shader in time with the music: FancyMenu passes variables to shaders as `fmVarFloat_<name>` uniforms.
+- "Audio Duration (Seconds)" placeholder (`menu_audio_duration_seconds`): the length of the current track, same format.
+
 ## [1.0.0]
 
 ### New
