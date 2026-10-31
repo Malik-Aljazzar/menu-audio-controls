@@ -15,7 +15,7 @@ Kopieren gedacht (öffentlich, daher Englisch).
 | Abhängigkeit | FancyMenu ≥ 3.9.14 (Pflicht); Konkrete + Melody zieht FancyMenu selbst nach |
 | Lizenz | MIT |
 | Jar | `build/libs/menu_audio_controls-1.0.0.jar` |
-| Logo | `icon.png` (512×512 Pixel-Art: Noten, Play-Button, Spulleiste; Generator `modpack_pipeline/menu/gen_addon_icon.py`) |
+| Logo | `icon.png` (512×512 Pixel-Art: Noten, Play-Button, Spulleiste; Generator `modpack_pipeline/menu/gen_mod_icons.py`) |
 | GitHub | `Malik-Aljazzar/menu-audio-controls` (steht schon in `gradle.properties`) |
 
 ## 1. CurseForge-Projekt anlegen
