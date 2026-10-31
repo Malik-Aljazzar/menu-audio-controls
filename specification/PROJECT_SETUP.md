@@ -52,17 +52,15 @@ CurseForge prüft neue Projekte und auch die erste Datei manuell. Das kann Stund
 
 ## 2. GitHub-Repo + Secret
 
-Im Ordner `mod_dev/zeta-menu-audio-1.21.1`. Git ist schon initialisiert, alles ist gestaget, aber
-noch nichts committet.
+**Erledigt (2026-10-31):** Repo `Malik-Aljazzar/menu-audio-controls` angelegt (**privat**), `main`
+gepusht, Secret `CURSEFORGE_API_KEY` gesetzt (eigener Token, lokal in
+`~/.zeta/curseforge_token_menu_audio`), CI-Build auf GitHub grün. Der lokale Ordner heißt noch
+`mod_dev/zeta-menu-audio-1.21.1` (VS Code hatte ihn beim Umbenennen gesperrt; nur kosmetisch).
 
-```powershell
-git commit -m "Menu Audio Controls 1.0.0"
-gh repo create Malik-Aljazzar/menu-audio-controls --public --source . --remote origin --push
-# CurseForge-API-Token (derselbe wie für die Modpack-Uploads), getrimmt, damit kein Zeilenumbruch mitkommt:
-gh secret set CURSEFORGE_API_KEY --repo Malik-Aljazzar/menu-audio-controls --body (Get-Content $HOME\.zeta\curseforge_token -Raw).Trim()
-```
+Offen: Die CurseForge-Beschreibung verlinkt den Quellcode. Damit der Link funktioniert, das Repo
+öffentlich machen (GitHub → Settings → General → Danger Zone → Change visibility).
 
-Danach die Projekt-ID aus Schritt 1 committen:
+Dann die Projekt-ID aus Schritt 1 committen:
 ```powershell
 git commit -am "CurseForge project id"
 git push
