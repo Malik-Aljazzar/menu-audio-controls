@@ -1,0 +1,45 @@
+# NeoForge mod metadata for Menu Audio Controls
+
+modLoader="javafml" #mandatory
+loaderVersion="${loader_version_range}" #mandatory
+license="${mod_license}"
+
+[[mods]] #mandatory
+modId="${mod_id}" #mandatory
+version="${mod_version}" #mandatory
+displayName="${mod_name}" #mandatory
+authors="Malik Aljazzar"
+
+description='''
+FancyMenu addon for menu music players built from FancyMenu's Audio element.
+
+- "Audio Seek Bar" element: shows how far the current track of an Audio element has played;
+  click or drag it to jump to another position.
+- "Seek Audio Track" action: jumps the current track of an Audio element to a position.
+- "Start Track At (Once Per Game Start)" action: the first time a given track plays after
+  the game started, it begins at a set position (e.g. skip a long intro on the title screen);
+  every later play of that track starts from the beginning.
+
+Client-side only.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId="fancymenu"
+    type="required"
+    versionRange="[${fancymenu_version},)"
+    ordering="AFTER"
+    side="CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="CLIENT"

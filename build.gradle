@@ -1,0 +1,156 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.141'
+    id 'idea'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.1'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+version = mod_version
+group = mod_group_id
+
+repositories {
+    mavenCentral()
+    // FancyMenu + Konkrete + Melody: no maven of their own, Modrinth's maven by version id.
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    // FancyMenu: compiled against, on the dev runtime with its own dependencies. Never shipped -
+    // mods.toml hard-requires it instead.
+    implementation("maven.modrinth:fancymenu:${fancymenu_modrinth_version}") { transitive = false }
+    localRuntime("maven.modrinth:konkrete:${konkrete_modrinth_version}") { transitive = false }
+    localRuntime("maven.modrinth:melody:${melody_modrinth_version}") { transitive = false }
+
+    // Unit tests for the FancyMenu-free core (seek math, intro start, action values).
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            fancymenu_version      : fancymenu_version,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-Xlint:deprecation')
+}
+
+// Release notes of this version: its own section of CHANGELOG.md, from "## [<mod_version>]" up to the next
+// "## [" heading. A release without one fails instead of going out with empty or wrong notes.
+def changelogSection = providers.provider {
+    def lines = file('CHANGELOG.md').readLines('UTF-8')
+    int start = lines.findIndexOf { it.trim() == "## [${mod_version}]" }
+    if (start < 0) {
+        throw new GradleException("CHANGELOG.md has no '## [${mod_version}]' section - add one before releasing")
+    }
+    int end = lines.findIndexOf(start + 1) { it.startsWith('## [') }
+    def body = lines.subList(start + 1, end < 0 ? lines.size() : end).join('\n').trim()
+    if (body.isEmpty()) {
+        throw new GradleException("The '## [${mod_version}]' section of CHANGELOG.md is empty")
+    }
+    "## [${mod_version}]\n\n${body}"
+}
+
+// Upload to CurseForge + GitHub release, run by .github/workflows/release.yml on a version tag. Without
+// CURSEFORGE_API_KEY (e.g. on a dev machine) it's always a dry run: the upload is only written to build/publishMods.
+publishMods {
+    file = jar.archiveFile
+    changelog = changelogSection
+    version = mod_version
+    type = STABLE
+    displayName = "${mod_id}-${mod_version}"
+    modLoaders.add('neoforge')
+    dryRun = providers.environmentVariable('CURSEFORGE_API_KEY').getOrNull() == null
+
+    curseforge {
+        projectId = providers.gradleProperty('curseforge_project_id').map { it.trim() }
+        accessToken = providers.environmentVariable('CURSEFORGE_API_KEY')
+        minecraftVersions.add(minecraft_version)
+        client = true
+        server = false
+        requires('fancymenu')
+    }
+    github {
+        accessToken = providers.environmentVariable('GITHUB_TOKEN')
+        repository = project.github_repository
+        commitish = providers.environmentVariable('GITHUB_SHA').orElse('main')
+        tagName = "v${mod_version}"
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

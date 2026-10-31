@@ -1,0 +1,12 @@
+{
+  "menu_audio_controls.elements.seek_bar": "Audio Seek Bar",
+  "menu_audio_controls.elements.seek_bar.desc": "Shows how far the current track of an Audio element has played. Click or drag it to jump to another position.",
+  "menu_audio_controls.elements.seek_bar.audio_element": "Audio Element Identifier",
+  "menu_audio_controls.seek_bar.narration": "Track position",
+  "menu_audio_controls.actions.seek": "Seek Audio Track",
+  "menu_audio_controls.actions.seek.desc": "Jumps the current track of an Audio element to a position.",
+  "menu_audio_controls.actions.seek.value": "<audio element identifier>:<seconds>",
+  "menu_audio_controls.actions.intro_start": "Start Track At (Once Per Game Start)",
+  "menu_audio_controls.actions.intro_start.desc": "The first time the given track of an Audio element plays after the game started, it begins at the given second. Every later play starts from the beginning. Running this action again in the same session does nothing, so it can go into a screen's opening actions.",
+  "menu_audio_controls.actions.intro_start.value": "<audio element identifier>:<track file, e.g. sweden.ogg>:<seconds>"
+}
